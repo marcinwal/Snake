@@ -115,7 +115,20 @@ public class GameActivity extends Activity {
         }
 
         private void controlFPS() {
+            long timeThisFrame = (System.currentTimeMillis() - lastFrameTime);
+            long timeToSleep = 100 - timeThisFrame;
+            if (timeThisFrame > 0){
+                fps = (int)(1000 / timeThisFrame);
+            }
+            if(timeToSleep > 0){
+                try{
+                    outThread.sleep(timeToSleep);
 
+                }catch (InterruptedException e){
+
+                }
+            }
+            lastFrameTime = System.currentTimeMillis();
         }
 
         private void drawGame() {
@@ -134,8 +147,8 @@ public class GameActivity extends Activity {
                 canvas.drawLine(screenWidth-
                         1,topGap+(numBlocksHigh*blockSize),1,topGap+
                         (numBlocksHigh*blockSize),paint);
-                canvas.drawLine(1,topGap,
-                        1,topGap+(numBlocksHigh*blockSize), paint);
+                canvas.drawLine(1, topGap,
+                        1, topGap + (numBlocksHigh * blockSize), paint);
                 //snake
                 canvas.drawBitmap(headBitmap,snakeX[0]*blockSize,
                         (snakeY[0]*blockSize)+topGap,paint);
