@@ -113,7 +113,60 @@ public class GameActivity extends Activity {
 
         }
 
+        private void controlFPS() {
+
+        }
+
+        private void drawGame() {
+            
+        }
+
         private void updateGame() {
+            if(snakeX[0] == appleX && snakeY[0] == appleY){
+                snakeLength++;
+                getApple();
+                score = score + snakeLength;
+                soundPool.play(sample1,1,1,0,0,1);
+            }
+            //moving body
+            for(int i=snakeLength; i>0;i--){
+                snakeX[i] = snakeX[i-1];
+                snakeY[i] = snakeY[i-1];
+            }
+            //moving head
+            switch (directionOfTravel){
+                case 0://going up
+                    snakeY[0]--;
+                    break;
+                case 1:
+                    snakeX[0]++;
+                    break;
+                case 2:
+                    snakeY[0]++;
+                    break;
+                case 3:
+                    snakeX[0]--;
+                    break;
+            }
+            boolean dead = false;
+
+            if(snakeX[0] == -1) dead = true;
+            if(snakeX[0] >= numBlocksWide) dead = true;
+            if(snakeY[0] == -1) dead = true;
+            if(snakeY[0] == numBlocksHigh) dead = true;
+            //eating ourselves?
+            for (int i = snakeLength-1;i > 0;i--){
+                if((i > 4) && snakeX[0] == snakeX[i]) &&
+                (snakeY[0] == snakeY[i]){
+                    dead = true;
+                }
+            }
+
+            if (dead){
+                soundPool.play(sample4,1,1,0,0,1);
+                score = 0;
+                getSnake();
+            }
         }
     }
 }
