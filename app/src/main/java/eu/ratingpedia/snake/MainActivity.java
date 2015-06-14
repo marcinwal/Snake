@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
 
         setContentView(snakeAnimView);
 
-        //i = new Intent(this,GameActivity.class);
+        i = new Intent(this,GameActivity.class);
 
     }
 
