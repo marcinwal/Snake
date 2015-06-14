@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -118,6 +119,37 @@ public class GameActivity extends Activity {
         }
 
         private void drawGame() {
+            if(ourHolder.getSurface().isValid()){
+                canvas = ourHolder.lockCanvas();
+                canvas.drawColor(Color.BLACK);
+                paint.setColor(Color.argb(255, 255, 255, 255));
+                paint.setTextSize(topGap / 2);
+                canvas.drawText("Score:" + score + " Hi:" + hi,
+                        10, topGap - 6, paint);
+                paint.setStrokeWidth(3);
+                canvas.drawLine(1, topGap, screenWidth - 1, topGap, paint);
+                canvas.drawLine(screenWidth-1,topGap,screenWidth-1,topGap+
+                        (numBlocksHigh*blockSize),paint);
+
+                canvas.drawLine(screenWidth-
+                        1,topGap+(numBlocksHigh*blockSize),1,topGap+
+                        (numBlocksHigh*blockSize),paint);
+                canvas.drawLine(1,topGap,
+                        1,topGap+(numBlocksHigh*blockSize), paint);
+                //snake
+                canvas.drawBitmap(headBitmap,snakeX[0]*blockSize,
+                        (snakeY[0]*blockSize)+topGap,paint);
+                for(int i = 1;i < snakeLength-1;i++){
+                    canvas.drawBitmap(bodyBitmap,snakeX[i]*blockSize,
+                            (snakeY[i]*blockSize)+topGap,paint);
+                }
+                //tail
+                canvas.drawBitmap(tailBitmap,snakeX[snakeLength-1]*blockSize,
+                                  (snakeY[snakeLength-1]*blockSize)+topGap,paint);
+                //apple
+                canvas.drawBitmap(appleBitmap,appleX*blockSize,(appleY*blockSize)+topGap,paint);
+                ourHolder.unlockCanvasAndPost(canvas);
+            }
             
         }
 
